@@ -112,20 +112,7 @@
             border: none;
             border-radius: 10px;
         }
-		.card-grid {
-			max-width: 800px;
-			margin: 0 auto;
-			margin-bottom: 30px;
-			display: grid;
-			grid-gap: 2rem;
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		}
-		.card {
-			background-color: white;
-			box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
-		}
-		
-		
+				
 		.button {
 			color: white;
 			padding: 14px 20px;
@@ -273,15 +260,9 @@
 		<div class="gray-label">depuis <span id="timeDifference" >00:00</span>
 		</div>		
     </div>
-        <div class="card-grid">
-            <div class="card">
-                <h2>Fetched Value</h2>
-                <p class="reading"><span id="valueContainer">NaN1</span></p>
-				<p class="gray-label">Last reading: <span id="timestamp"></span></p>
-            </div>
-        </div>
     <div class="footer">
-        <p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
+        <p><a>Merci au programme qui m'a grandement aidé</a></p>
+	<p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
         <p><a href="https://RandomNerdTutorials.com/esp32-web-bluetooth/">Read the full project here.</a></p>
     </div>
 </body>
@@ -290,10 +271,10 @@
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
     const onButton = document.getElementById('onButton');
-    const retrievedValue = document.getElementById('valueContainer');
+    
     const latestValueSent = document.getElementById('valueSent');
     const bleStateContainer = document.getElementById('bleState');
-    const timestampContainer = document.getElementById('timestamp');
+  
 		
 		//Define BLE Device Specs
     var deviceName ='ESP32';
@@ -399,26 +380,20 @@
         console.log('non connectée', event.target.device.name);
         bleStateContainer.innerHTML = "non connectéé";
         bleStateContainer.style.color = "#d13a30";
-
         connectToDevice();
     }
 
     function handleCharacteristicChange(event){
         const newValueReceived = new TextDecoder().decode(event.target.value);
         console.log("Characteristic value changed: ", newValueReceived);
-		retrievedValue.innerHTML = newValueReceived;
-        timestampContainer.innerHTML = getDateTime();
-    
-	
+		
 	 // Récupérer les valeurs
         const valeurs = newValueReceived.split(',');
-
     // Convertir les valeurs en nombres
         const valeur1 = parseFloat(valeurs[0]);
         const valeur2 = parseFloat(valeurs[1]);
         const valeur3 = parseFloat(valeurs[2]);
         const valeur4 = parseFloat(valeurs[3]);
-
     // Effectuer les calculs
 		const somme1 = (valeur1)/10 ;
         const somme2 = (valeur2)/10;
@@ -437,7 +412,6 @@
 		const pourcentage2et4 = (somme2et4 / somme1et2et3et4) * 100;
 		const pourcentage1et4 = (somme1et4 / somme1et2et3et4) * 100;
         const pourcentage2et3 = (somme2et3 / somme1et2et3et4) * 100;
-
     // Afficher les résultats
 		document.getElementById('value1').innerText = `${somme1et2.toFixed(1)}g`;
 		document.getElementById('valueBis1').innerText = `${pourcentage1et2.toFixed(0)}%`;
@@ -505,19 +479,6 @@
             console.error("Bluetooth is not connected.");
             window.alert("Bluetooth is not connected.")
         }
-    }
-
-    function getDateTime() {
-        var currentdate = new Date();
-        var day = ("00" + currentdate.getDate()).slice(-2); // Convert day to string and slice
-        var month = ("00" + (currentdate.getMonth() + 1)).slice(-2);
-        var year = currentdate.getFullYear();
-        var hours = ("00" + currentdate.getHours()).slice(-2);
-        var minutes = ("00" + currentdate.getMinutes()).slice(-2);
-        var seconds = ("00" + currentdate.getSeconds()).slice(-2);
-
-        var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
-        return datetime;
     }
 </script>
 </html>
