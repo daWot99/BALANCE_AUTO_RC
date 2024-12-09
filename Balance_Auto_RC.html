@@ -144,19 +144,23 @@
 		}
 		
 		.connectButton{
+			padding: 3px 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: #fff;
             cursor: pointer;
-            font-size: 2.5rem;
-			color: green;
-			background-color: #202020;
-			border : none;
+            font-size: 1em;
 		}
 
 		.disconnectButton{
+ 			padding: 3px 8px;
+            border: none;
+            border-radius: 10px;
+            background-color: red;
+            color: #fff;
             cursor: pointer;
-            font-size: 2.5rem;
-			color: red;
-			background-color: #202020;
-			border : none;
+            font-size: 1em;
 		}
 
 		.gray-label {
@@ -253,16 +257,16 @@
             </div>
         </div>
 		<div class="zone-value">
-			<button id="connectBleButton" class="connectButton">&#9742</button>
+			<button id="connectBleButton" class="connectButton">connecter</button>
 			<button id="onButton" class="onButton">Pesée</button>
-			<button id="disconnectBleButton" class="disconnectButton">&#9742</button>
+			<button id="disconnectBleButton" class="disconnectButton">déconnecter</button>
 		</div>
 		<div class="gray-label">depuis <span id="timeDifference" >00:00</span>
 		</div>		
     </div>
     <div class="footer">
         <p><a>Merci au programme qui m'a grandement aidé</a></p>
-	<p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
+		<p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
         <p><a href="https://RandomNerdTutorials.com/esp32-web-bluetooth/">Read the full project here.</a></p>
     </div>
 </body>
