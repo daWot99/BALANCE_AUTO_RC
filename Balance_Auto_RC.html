@@ -1,0 +1,523 @@
+<!--
+  Mon programme est très fortement copié sur le projet de 
+  
+  Rui Santos
+  Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files.
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  
+  un peu IA et de galères pour aboutir à mon programme pas très joli mais fonctionnel
+-->
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage de Valeurs</title>
+    <style>
+        html {
+			background-color: #202020; /* Couleur de fond gris foncé */
+			font-family: Arial, Helvetica, sans-serif;
+			display: inline-block;
+			text-align: center;
+		}
+		h1 {
+			font-size:0.8rem;
+			color: white;
+		}
+		.topnav {
+			overflow: hidden;
+			background-color: #3B3B3B;
+		}
+		.content {
+			padding: 2px;
+		}
+        .body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #202020;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2px;
+            position: relative;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 2px 0;
+        }
+        .zone {
+            background-color: #202020;
+            border: 1px solid #202020;
+            padding: 2px;
+            margin: 2px;
+            width: 100px;
+            text-align: center;
+        }
+        .zone-name {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: blue;
+            font-size: 0.6em;
+        }
+		.zone-name1 {
+            margin-top: 20px;
+			margin-bottom: 10px;
+            font-weight: bold;
+            color: blue;
+            font-size: 0.6em;
+        }
+        .zone-value {
+            color: #FFF;
+            font-size: 0.8em;
+        }
+		.zone-valueBis {
+            color: #FFF;
+            font-size: 0.6em;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+        }
+        .measure-button {
+            padding: 5px 20px;
+            border: 2px solid #FFF;
+            border-radius: 10px;
+            background-color: transparent;
+            color: #FFF;
+            cursor: pointer;
+            font-size: 1em;
+        }
+		.space { 
+			height: 95px;
+		}
+		.space1 { 
+			height: 20px;
+		}
+		.buttonROUE {
+            width: 50%;
+            height: 100%;
+            background-color: #5B5B5B;
+            border: none;
+            border-radius: 10px;
+        }
+		.card-grid {
+			max-width: 800px;
+			margin: 0 auto;
+			margin-bottom: 30px;
+			display: grid;
+			grid-gap: 2rem;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		}
+		.card {
+			background-color: white;
+			box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
+		}
+		
+		
+		.button {
+			color: white;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			cursor: pointer;
+			border-radius: 4px;
+		}
+
+		.onButton{
+			padding: 10px 20px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background-color: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1em;
+		}
+
+		.offButton{
+			background-color: #5f6c6d;
+		}
+		
+		.button-row { 
+			display: flex;
+			justify-content: 
+			center; gap: 5px; 
+
+		}
+		
+		.connectButton{
+            cursor: pointer;
+            font-size: 2.5rem;
+			color: green;
+			background-color: #202020;
+			border : none;
+		}
+
+		.disconnectButton{
+            cursor: pointer;
+            font-size: 2.5rem;
+			color: red;
+			background-color: #202020;
+			border : none;
+		}
+
+		.gray-label {
+			color: #bebebe;
+			font-size: 1rem;
+		}
+
+		.reading {
+			font-size: 1.8rem;
+		}
+    </style>
+</head>
+<body>
+	<div class="topnav">
+        <h1 id="pageTitle">Balance Auto RC &nbsp; <strong><span id="bleState" style="color:red ;">non connectée</span></h1>
+    </div>
+	<div class="container">
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name">Poids avant</div>
+                <div class="zone-value" id="value1">Valeur 1</div>
+				<div class="zone-valueBis" id="valueBis1">Valeur 1</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name1">Avant gauche</div>
+                <div class="zone-value" id="value2">Valeur 2</div>
+            </div>
+                <div class="zone"><button class="buttonROUE"></button></div>
+				<div class="zone"><button class="buttonROUE"></button></div>
+		   <div class="zone">
+                <div class="zone-name1">Avant droit</div>
+                <div class="zone-value" id="value3">Valeur 3</div>
+            </div>
+			<div class="space"></div> <!-- Espace ajouté -->
+		</div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name1">Poids à gauche</div>
+                <div class="zone-value" id="value4">Valeur 4</div>
+				<div class="zone-valueBis" id="valueBis4">Valeur 4</div>
+            </div>
+				<div class="zone"></div> <!-- Ecartement -->
+				<div class="zone"></div> <!-- Ecartement -->
+            <div class="zone">
+                <div class="zone-name1">Poids à droite</div>
+                <div class="zone-value" id="value5">Valeur 5</div>
+				<div class="zone-valueBis" id="valueBis5">Valeur 5</div>
+            </div>
+			<div class="space"></div> <!-- Espace ajouté -->
+        </div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name1">Arrière gauche</div>
+                <div class="zone-value" id="value6">Valeur 6</div>
+            </div>
+				<div class="zone"><button class="buttonROUE"></button></div>
+				<div class="zone"><button class="buttonROUE"></button></div>
+            <div class="zone">
+                <div class="zone-name1">Arrière droit</div>
+                <div class="zone-value" id="value7">Valeur 7</div>
+            </div>
+        <div class="space"></div> <!-- Espace ajouté -->
+        </div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name">Poids arrière</div>
+                <div class="zone-value" id="value8">Valeur 8</div>
+				<div class="zone-valueBis" id="valueBis8">Valeur 8</div>
+            </div>
+        <div class="space1"></div> <!-- Espace ajouté -->
+        </div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name">Poids Total</div>
+                <div class="zone-value" id="value9">Valeur 9</div>
+            </div>
+        <div class="space1"></div> <!-- Espace ajouté -->
+        </div>
+        <div class="row">
+            <div class="zone">
+                <div class="zone-name">AV.Droit/AR.Gauche</div>
+                <div class="zone-value" id="value10">Valeur 10</div>
+				<div class="zone-valueBis" id="valueBis10">Valeur 10</div>
+            </div>
+        <div class="space1"></div> <!-- Espace ajouté -->
+				<div class="zone"></div> <!-- Ecartement -->
+				<div class="zone"></div> <!-- Ecartement -->
+            <div class="zone">
+                <div class="zone-name">AV.Gauche/AR.Droit</div>
+                <div class="zone-value" id="value11">Valeur 11</div>
+				<div class="zone-valueBis" id="valueBis11">Valeur 11</div>
+            </div>
+        </div>
+		<div class="zone-value">
+			<button id="connectBleButton" class="connectButton">&#9742</button>
+			<button id="onButton" class="onButton">Pesée</button>
+			<button id="disconnectBleButton" class="disconnectButton">&#9742</button>
+		</div>
+		<div class="gray-label">depuis <span id="timeDifference" >00:00</span>
+		</div>		
+    </div>
+        <div class="card-grid">
+            <div class="card">
+                <h2>Fetched Value</h2>
+                <p class="reading"><span id="valueContainer">NaN1</span></p>
+				<p class="gray-label">Last reading: <span id="timestamp"></span></p>
+            </div>
+        </div>
+    <div class="footer">
+        <p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
+        <p><a href="https://RandomNerdTutorials.com/esp32-web-bluetooth/">Read the full project here.</a></p>
+    </div>
+</body>
+<script>
+		// DOM Elements
+    const connectButton = document.getElementById('connectBleButton');
+    const disconnectButton = document.getElementById('disconnectBleButton');
+    const onButton = document.getElementById('onButton');
+    const retrievedValue = document.getElementById('valueContainer');
+    const latestValueSent = document.getElementById('valueSent');
+    const bleStateContainer = document.getElementById('bleState');
+    const timestampContainer = document.getElementById('timestamp');
+		
+		//Define BLE Device Specs
+    var deviceName ='ESP32';
+    var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
+    var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
+
+		//Global Variables to Handle Bluetooth
+    var bleServer;
+    var bleServiceFound;
+    var sensorCharacteristicFound;
+
+		// Connect Button (search for BLE Devices only if BLE is available)
+    connectButton.addEventListener('click', (event) => {
+        if (isWebBluetoothEnabled()){
+            connectToDevice();
+        }
+    });
+
+		// Disconnect Button
+    disconnectButton.addEventListener('click', disconnectDevice);
+
+		// DECOMPTE DU TEMPS ECOULE
+        let startTime;
+        let timer;
+        function updateTimer() {
+            const currentTime = new Date();
+            const timeDifference = currentTime - startTime;
+            const minutes = Math.floor(timeDifference / 60000);
+            const seconds = Math.floor((timeDifference % 60000) / 1000);
+            if (minutes >= 60) {
+                clearInterval(timer);
+                document.getElementById('timeDifference').innerText = "plus d'une heure";
+            } else {
+                document.getElementById('timeDifference').innerText = 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }
+        }
+        document.getElementById('onButton').addEventListener('click', () => {
+            writeOnCharacteristic(1); // Write to the ESP32 LED Characteristic
+            clearInterval(timer); // Arrêter le compteur précédent
+            startTime = new Date(); // Enregistre l'heure actuelle
+            document.getElementById('timeDifference').innerText = "00:00"; // Réinitialise l'affichage
+            timer = setInterval(updateTimer, 1000); // Mettre à jour toutes les secondes
+        });
+
+		// Check if BLE is available in your Browser
+    function isWebBluetoothEnabled() {
+        if (!navigator.bluetooth) {
+            console.log('Web Bluetooth API is not available in this browser!');
+            bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser/device!";
+            return false
+        }
+        console.log('Web Bluetooth API supported in this browser.');
+        return true
+    }
+
+		// Connect to BLE Device and Enable Notifications
+    function connectToDevice(){
+        console.log('Initializing Bluetooth...');
+        navigator.bluetooth.requestDevice({
+            filters: [{name: deviceName}],
+            optionalServices: [bleService]
+        })
+        .then(device => {
+            console.log('Device Selected:', device.name);
+            bleStateContainer.innerHTML = 'connectée';
+            bleStateContainer.style.color = "#24af37";
+            device.addEventListener('gattservicedisconnected', onDisconnected);
+            return device.gatt.connect();
+        })
+        .then(gattServer =>{
+            bleServer = gattServer;
+            console.log("Connected to GATT Server");
+            return bleServer.getPrimaryService(bleService);
+        })
+        .then(service => {
+            bleServiceFound = service;
+            console.log("Service discovered:", service.uuid);
+            return service.getCharacteristic(sensorCharacteristic);
+        })
+        .then(characteristic => {
+            console.log("Characteristic discovered:", characteristic.uuid);
+            sensorCharacteristicFound = characteristic;
+            characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
+            characteristic.startNotifications();
+            console.log("Notifications Started.");
+            return characteristic.readValue();
+        })
+        .then(value => {
+            console.log("Read value: ", value);
+            const decodedValue = new TextDecoder().decode(value);
+            console.log("Decoded value: ", decodedValue);
+			retrievedValue1.innerHTML = decodedValue;
+        })
+        .catch(error => {
+            console.log('Error: ', error);
+        })
+    }
+
+    function onDisconnected(event){
+        console.log('non connectée', event.target.device.name);
+        bleStateContainer.innerHTML = "non connectéé";
+        bleStateContainer.style.color = "#d13a30";
+
+        connectToDevice();
+    }
+
+    function handleCharacteristicChange(event){
+        const newValueReceived = new TextDecoder().decode(event.target.value);
+        console.log("Characteristic value changed: ", newValueReceived);
+		retrievedValue.innerHTML = newValueReceived;
+        timestampContainer.innerHTML = getDateTime();
+    
+	
+	 // Récupérer les valeurs
+        const valeurs = newValueReceived.split(',');
+
+    // Convertir les valeurs en nombres
+        const valeur1 = parseFloat(valeurs[0]);
+        const valeur2 = parseFloat(valeurs[1]);
+        const valeur3 = parseFloat(valeurs[2]);
+        const valeur4 = parseFloat(valeurs[3]);
+
+    // Effectuer les calculs
+		const somme1 = (valeur1)/10 ;
+        const somme2 = (valeur2)/10;
+		const somme3 = (valeur3)/10;
+        const somme4 = (valeur4)/10;
+		const somme1et2 = (valeur1 + valeur2)/10;
+        const somme3et4 = (valeur3 + valeur4)/10;
+		const somme1et3 = (valeur1 + valeur3)/10;
+        const somme2et4 = (valeur2 + valeur4)/10;
+		const somme2et3 = (valeur2 + valeur3)/10;
+        const somme1et4 = (valeur1 + valeur4)/10;
+        const somme1et2et3et4 = (somme1et2 + somme3et4);
+		const pourcentage1et2 = (somme1et2 / somme1et2et3et4) * 100;
+		const pourcentage3et4 = (somme3et4 / somme1et2et3et4) * 100;
+		const pourcentage1et3 = (somme1et3 / somme1et2et3et4) * 100;
+		const pourcentage2et4 = (somme2et4 / somme1et2et3et4) * 100;
+		const pourcentage1et4 = (somme1et4 / somme1et2et3et4) * 100;
+        const pourcentage2et3 = (somme2et3 / somme1et2et3et4) * 100;
+
+    // Afficher les résultats
+		document.getElementById('value1').innerText = `${somme1et2.toFixed(1)}g`;
+		document.getElementById('valueBis1').innerText = `${pourcentage1et2.toFixed(0)}%`;
+		document.getElementById('value2').innerText = `${somme1.toFixed(1)}g`;
+        document.getElementById('value3').innerText = `${somme2.toFixed(1)}g`;
+        document.getElementById('value4').innerText = `${somme1et3.toFixed(1)}g`;
+		document.getElementById('valueBis4').innerText = `${pourcentage1et3.toFixed(0)}%`;
+		document.getElementById('value5').innerText = `${somme2et4.toFixed(1)}g`;
+		document.getElementById('valueBis5').innerText = `${pourcentage2et4.toFixed(0)}%`;
+        document.getElementById('value6').innerText = `${somme3.toFixed(1)}g`;
+        document.getElementById('value7').innerText = `${somme4.toFixed(1)}g`;
+        document.getElementById('value8').innerText = `${somme3et4.toFixed(1)}g`;
+		document.getElementById('valueBis8').innerText = `${pourcentage3et4.toFixed(0)}%`;
+		document.getElementById('value9').innerText = `${somme1et2et3et4.toFixed(1)}`; // poids total
+        document.getElementById('value10').innerText = `${somme2et3.toFixed(1)}g`;
+		document.getElementById('valueBis10').innerText = `${pourcentage2et3.toFixed(0)}%`;
+        document.getElementById('value11').innerText = `${somme1et4.toFixed(1)}g`;
+		document.getElementById('valueBis11').innerText = `${pourcentage1et4.toFixed(0)}%`;
+		}
+    
+	function writeOnCharacteristic(value){
+        if (bleServer && bleServer.connected) {
+            bleServiceFound.getCharacteristic(ledCharacteristic)
+            .then(characteristic => {
+                console.log("Found the LED characteristic: ", characteristic.uuid);
+                const data = new Uint8Array([value]);
+                return characteristic.writeValue(data);
+            })
+            .then(() => {
+                latestValueSent.innerHTML = value;
+                console.log("Value written to LEDcharacteristic:", value);
+            })
+            .catch(error => {
+                console.error("Error writing to the LED characteristic: ", error);
+            });
+        } else {
+            console.error ("Bluetooth is not connected. Cannot write to characteristic.")
+            window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
+        }
+    }
+
+    function disconnectDevice() {
+        console.log("Disconnect Device.");
+        if (bleServer && bleServer.connected) {
+            if (sensorCharacteristicFound) {
+                sensorCharacteristicFound.stopNotifications()
+                    .then(() => {
+                        console.log("Notifications Stopped");
+                        return bleServer.disconnect();
+                    })
+                    .then(() => {
+                        console.log("non connectée");
+                        bleStateContainer.innerHTML = "non connectée";
+                        bleStateContainer.style.color = "#d13a30";
+
+                    })
+                    .catch(error => {
+                        console.log("An error occurred:", error);
+                    });
+            } else {
+                console.log("No characteristic found to disconnect.");
+            }
+        } else {
+            // Throw an error if Bluetooth is not connected
+            console.error("Bluetooth is not connected.");
+            window.alert("Bluetooth is not connected.")
+        }
+    }
+
+    function getDateTime() {
+        var currentdate = new Date();
+        var day = ("00" + currentdate.getDate()).slice(-2); // Convert day to string and slice
+        var month = ("00" + (currentdate.getMonth() + 1)).slice(-2);
+        var year = currentdate.getFullYear();
+        var hours = ("00" + currentdate.getHours()).slice(-2);
+        var minutes = ("00" + currentdate.getMinutes()).slice(-2);
+        var seconds = ("00" + currentdate.getSeconds()).slice(-2);
+
+        var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
+        return datetime;
+    }
+</script>
+</html>
