@@ -1,13 +1,12 @@
 <!--
-  Mon programme est très fortement copié sur le projet de 
+  Mon programme est inspiré par :
   
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
+			  - IA Copilot de Microsoft
+			  -	Rui Santos
+				Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files.
-  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-  
-  un peu IA et de galères pour aboutir à mon programme pas très joli mais fonctionnel
+
+
 -->
 
 
@@ -149,8 +148,7 @@
 			border: 5px solid #5B5B5B;
             border-radius: 40px;
 			margin-top: 30px;
-        }
-				
+        }		
 		.button {
 			color: white;
 			padding: 14px 20px;
@@ -169,39 +167,37 @@
             cursor: pointer;
             font-size: 1em;
 		}
-
 		.offButton{
 			background-color: #5f6c6d;
 		}
-		
 		.button-row { 
 			display: flex;
 			justify-content: 
 			center; gap: 5px; 
-
 		}
-		
 		.connectButton{
+			padding: 3px 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: #fff;
             cursor: pointer;
-            font-size: 2.5rem;
-			color: green;
-			background-color: #202020;
-			border : none;
+            font-size: 1em;
 		}
 
 		.disconnectButton{
+ 			padding: 3px 8px;
+            border: none;
+            border-radius: 10px;
+            background-color: red;
+            color: #fff;
             cursor: pointer;
-            font-size: 2.5rem;
-			color: red;
-			background-color: #202020;
-			border : none;
+            font-size: 1em;
 		}
-
 		.gray-label {
 			color: #bebebe;
 			font-size: 1rem;
 		}
-
 		.reading {
 			font-size: 1.8rem;
 		}
@@ -215,14 +211,14 @@
         <div class="row">
             <div class="zone">
                 <div class="zone-name">Poids avant</div>
-                <div class="zone-value" id="value1">Valeur 1</div>
-				<div class="zone-valueBis" id="valueBis1">Valeur 1</div>
+                <div class="zone-value" id="value1">NC g</div>
+				<div class="zone-valueBis" id="valueBis1">NC %</div>
             </div>
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name1">Avant gauche</div>
-                <div class="zone-value" id="value2">Valeur 2</div>
+                <div class="zone-value" id="value2">NC g</div>
             </div>
                 <div class="zoneRoue"><button class="buttonROUE"></button></div>
 				<!-- dessiner des essieux -->		
@@ -232,29 +228,29 @@
 				<div class="zoneRoue"><button class="buttonROUE"></button></div>			
 			<div class="zone">
                 <div class="zone-name1">Avant droit</div>
-                <div class="zone-value" id="value3">Valeur 3</div>
+                <div class="zone-value" id="value3">NC g</div>
             </div>
 			<div class="space"></div> <!-- Espace ajouté -->
 		</div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name1">Poids à gauche</div>
-                <div class="zone-value" id="value4">Valeur 4</div>
-				<div class="zone-valueBis" id="valueBis4">Valeur 4</div>
+                <div class="zone-value" id="value4">NC g</div>
+				<div class="zone-valueBis" id="valueBis4">NC %</div>
             </div>
 				<div class="zone"></div> <!-- Ecartement -->
 				<div class="zone"></div> <!-- Ecartement -->
             <div class="zone">
                 <div class="zone-name1">Poids à droite</div>
-                <div class="zone-value" id="value5">Valeur 5</div>
-				<div class="zone-valueBis" id="valueBis5">Valeur 5</div>
+                <div class="zone-value" id="value5">NC g</div>
+				<div class="zone-valueBis" id="valueBis5">NC %</div>
             </div>
 			<div class="space"></div> <!-- Espace ajouté -->
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name1">Arrière gauche</div>
-                <div class="zone-value" id="value6">Valeur 6</div>
+                <div class="zone-value" id="value6">NC g</div>
             </div>
 				<div class="zoneRoue"><button class="buttonROUE"></button></div>
 				<!-- dessiner des essieux -->		
@@ -264,44 +260,44 @@
 				<div class="zoneRoue"><button class="buttonROUE"></button></div>	
             <div class="zone">
                 <div class="zone-name1">Arrière droit</div>
-                <div class="zone-value" id="value7">Valeur 7</div>
+                <div class="zone-value" id="value7">NC g</div>
             </div>
         <div class="space"></div> <!-- Espace ajouté -->
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name">Poids arrière</div>
-                <div class="zone-value" id="value8">Valeur 8</div>
-				<div class="zone-valueBis" id="valueBis8">Valeur 8</div>
+                <div class="zone-value" id="value8">NC g</div>
+				<div class="zone-valueBis" id="valueBis8">NC %</div>
             </div>
         <div class="space1"></div> <!-- Espace ajouté -->
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name">Poids Total</div>
-                <div class="zone-value" id="value9">Valeur 9</div>
+                <div class="zone-value" id="value9">NC g </div>
             </div>
         <div class="space1"></div> <!-- Espace ajouté -->
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name">AV.Droit/AR.Gauche</div>
-                <div class="zone-value" id="value10">Valeur 10</div>
-				<div class="zone-valueBis" id="valueBis10">Valeur 10</div>
+                <div class="zone-value" id="value10">NC g</div>
+				<div class="zone-valueBis" id="valueBis10">NC %</div>
             </div>
         <div class="space1"></div> <!-- Espace ajouté -->
 				<div class="zone"></div> <!-- Ecartement -->
 				<div class="zone"></div> <!-- Ecartement -->
             <div class="zone">
                 <div class="zone-name">AV.Gauche/AR.Droit</div>
-                <div class="zone-value" id="value11">Valeur 11</div>
-				<div class="zone-valueBis" id="valueBis11">Valeur 11</div>
+                <div class="zone-value" id="value11">NC g</div>
+				<div class="zone-valueBis" id="valueBis11">NC %</div>
             </div>
         </div>
 		<div class="zone-value">
-			<button id="connectBleButton" class="connectButton">&#9742</button>
+			<button id="connectBleButton" class="connectButton">connecter</button>
 			<button id="onButton" class="onButton">Pesée</button>
-			<button id="disconnectBleButton" class="disconnectButton">&#9742</button>
+			<button id="disconnectBleButton" class="disconnectButton">déconnecter</button>
 		</div>
 		<div class="gray-label">depuis <span id="timeDifference" >00:00</span>
 		</div>		
@@ -313,34 +309,25 @@
     </div>
 </body>
 <script>
-		// DOM Elements
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
-    const onButton = document.getElementById('onButton');
-    
+    const onButton = document.getElementById('onButton');   
     const latestValueSent = document.getElementById('valueSent');
-    const bleStateContainer = document.getElementById('bleState');
-  
-		
-		//Define BLE Device Specs
-    var deviceName ='ESP32C6_BAL';
+    const bleStateContainer = document.getElementById('bleState');	
+    var deviceName = 'ESP32C6_BAL';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
-    var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var PESEECharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
     var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
-
-		//Global Variables to Handle Bluetooth
     var bleServer;
     var bleServiceFound;
     var sensorCharacteristicFound;
 
-		// Connect Button (search for BLE Devices only if BLE is available)
     connectButton.addEventListener('click', (event) => {
         if (isWebBluetoothEnabled()){
             connectToDevice();
         }
     });
 
-		// Disconnect Button
     disconnectButton.addEventListener('click', disconnectDevice);
 
 		// DECOMPTE DU TEMPS ECOULE
@@ -361,14 +348,13 @@
             }
         }
         document.getElementById('onButton').addEventListener('click', () => {
-            writeOnCharacteristic(1); // Write to the ESP32 LED Characteristic
+            writeOnCharacteristic(1); // demandée une PESEE (PESEECharacteristic)
             clearInterval(timer); // Arrêter le compteur précédent
             startTime = new Date(); // Enregistre l'heure actuelle
             document.getElementById('timeDifference').innerText = "00:00"; // Réinitialise l'affichage
             timer = setInterval(updateTimer, 1000); // Mettre à jour toutes les secondes
         });
 
-		// Check if BLE is available in your Browser
     function isWebBluetoothEnabled() {
         if (!navigator.bluetooth) {
             console.log('Web Bluetooth API is not available in this browser!');
@@ -379,7 +365,6 @@
         return true
     }
 
-		// Connect to BLE Device and Enable Notifications
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
@@ -433,7 +418,7 @@
         const newValueReceived = new TextDecoder().decode(event.target.value);
         console.log("Characteristic value changed: ", newValueReceived);
 		
-	 // Récupérer les valeurs
+	// Récupérer les valeurs des pesées
         const valeurs = newValueReceived.split(',');
     // Convertir les valeurs en nombres
         const valeur1 = parseFloat(valeurs[0]);
@@ -480,7 +465,7 @@
     
 	function writeOnCharacteristic(value){
         if (bleServer && bleServer.connected) {
-            bleServiceFound.getCharacteristic(ledCharacteristic)
+            bleServiceFound.getCharacteristic(PESEECharacteristic)
             .then(characteristic => {
                 console.log("Found the LED characteristic: ", characteristic.uuid);
                 const data = new Uint8Array([value]);
@@ -488,10 +473,10 @@
             })
             .then(() => {
                 latestValueSent.innerHTML = value;
-                console.log("Value written to LEDcharacteristic:", value);
+                console.log("Value written to PESEECharacteristic:", value);
             })
             .catch(error => {
-                console.error("Error writing to the LED characteristic: ", error);
+                console.error("Error writing to the PESEEcharacteristic: ", error);
             });
         } else {
             console.error ("Bluetooth is not connected. Cannot write to characteristic.")
@@ -521,7 +506,6 @@
                 console.log("No characteristic found to disconnect.");
             }
         } else {
-            // Throw an error if Bluetooth is not connected
             console.error("Bluetooth is not connected.");
             window.alert("Bluetooth is not connected.")
         }
