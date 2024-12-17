@@ -296,7 +296,7 @@
         </div>
 		<div class="zone-value">
 			<button id="connectBleButton" class="connectButton">connecter</button>
-			<button id="onButton" class="onButton">Pesée</button>
+			<button id="onButton" class="onButton">Zéro</button>
 			<button id="disconnectBleButton" class="disconnectButton">déconnecter</button>
 		</div>
 		<div class="gray-label">depuis <span id="timeDifference" >00:00</span>
@@ -316,7 +316,7 @@
     const bleStateContainer = document.getElementById('bleState');	
     var deviceName = 'ESP32C6_BAL';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
-    var PESEECharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var TARECharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
     var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
     var bleServer;
     var bleServiceFound;
@@ -348,7 +348,7 @@
             }
         }
         document.getElementById('onButton').addEventListener('click', () => {
-            writeOnCharacteristic(1); // demandée une PESEE (PESEECharacteristic)
+            writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
             clearInterval(timer); // Arrêter le compteur précédent
             startTime = new Date(); // Enregistre l'heure actuelle
             document.getElementById('timeDifference').innerText = "00:00"; // Réinitialise l'affichage
@@ -465,7 +465,7 @@
     
 	function writeOnCharacteristic(value){
         if (bleServer && bleServer.connected) {
-            bleServiceFound.getCharacteristic(PESEECharacteristic)
+            bleServiceFound.getCharacteristic(TARECharacteristic)
             .then(characteristic => {
                 console.log("Found the LED characteristic: ", characteristic.uuid);
                 const data = new Uint8Array([value]);
@@ -473,10 +473,10 @@
             })
             .then(() => {
                 latestValueSent.innerHTML = value;
-                console.log("Value written to PESEECharacteristic:", value);
+                console.log("Value written to TARECharacteristic:", value);
             })
             .catch(error => {
-                console.error("Error writing to the PESEEcharacteristic: ", error);
+                console.error("Error writing to the TAREcharacteristic: ", error);
             });
         } else {
             console.error ("Bluetooth is not connected. Cannot write to characteristic.")
