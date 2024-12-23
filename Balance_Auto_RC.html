@@ -61,9 +61,23 @@
             width: 90%;
             margin: 2px 0;
         }
-         .zone {
+		.rowCAL {
+            display: flex;
+            justify-content: center;
+            width: 95%;
+            margin: 2px 0;
+        }
+        .zone {
             background-color: #202020;
             border: 1px solid #202020;
+            padding: 2px;
+            margin: 2px;
+            width: 100px;
+            text-align: center;
+        }
+		.zoneCAL {
+            background-color: #5B5B5B;
+            border: 1px solid #5B5B5B;
             padding: 2px;
             margin: 2px;
             width: 100px;
@@ -218,12 +232,12 @@
 		.reading {
 			font-size: 1.8rem;
 		}
-		.overlay {	
+		.overlay {			
 			display: none;
             position: top;
-			margin: 0 auto; /* Centre horizontalement */ 
+			margin: 1px; /* Centre horizontalement */ 
 			text-align: center;
-            width: 90%;
+            width: 95%;
             height: 100%;
             background-color: #5B5B5B;
 			border: 10px solid #ADADAD;;
@@ -252,24 +266,39 @@
             cursor: pointer;
             font-size: 0.8em;
         }
-        #homeButton {
+        .homeButton {
             margin-top: 20px;
             padding: 5px 10px;
             font-size: 16px;
-            border: none;
+            border: 2px solid #fff;
 			border-radius: 10px;
             cursor: pointer;
             background-color: #007BFF;
             color: white;
         }	
+		.onButtonCAL{
+			margin-top: 20px;
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 2px solid #fff;
+			border-radius: 10px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            
+		}
 		.instructions {
-			list-style-type: disc; /* Ajouter des puces */
+			padding: 5px 10px;
+			text-align: justify;
 			line-height: 1; /* Ajuster l'interligne */ 
 			text-align: left; /* Aligner le texte à gauche */ }
-		} 
+		}
 		.instructions li { 
 			margin-bottom: 2px; /* Espacement entre les lignes */ 
-		}		
+		}
+		.justified-text {
+		text-align: justify; 
+		}
     </style>
 </head>
 <body>
@@ -384,32 +413,41 @@
 <!-- DIV de calibration avec boutons et retours -->
 	<div id="overlay" class="overlay">
 		<ul class="instructions">
-		<p>Pour calibrer votre balance :</p> 
-		<li>Placez un poids de 1kg sur le(s) plot(s) de pesée.</li> 
-		<li>Appuyer sur le(s) bouton(s) correspondant(s).</li> 
-		<li>Attendez que les boutons passent au vert.</li> 
-		<li>Ôtez tous les poids.</li> 
-		<li>Retournez à la page des réglages et relancer une remise à zero.</li>
-		</ul>
-		<div class="button-container">
-            <div class="zone-value">
-                <button id="button2">Avant gauche</button>
-				<div class="zone-value" id="valueCAL2">NC g</div>
-            </div>
-            <div class="zone-value">
-                <button id="button3">Avant droit</button>
-				<div class="zone-value" id="valueCAL3">NC g</div>
-            </div>
-            <div class="zone-value">
-                <button id="button6">Arrière gauche</button>
-				<div class="zone-value" id="valueCAL6">NC g</div>
-            </div>
-            <div class="zone-value">
-                <button id="button7">Arrière droit</button>
-				<div class="zone-value" id="valueCAL7">NC g</div>
-            </div>
+		<p>MODE CALIBRATION</p>	
+		<p class="justified-text">Avant de commencer, assurez-vous qu'aucun objet n'occupe les plots de mesure et demandez une remise à zéro.</p>	
+	<div class="rowCAL">
+		<button id="onButtonCAL" class="onButton">Zéro</button>	
 	</div>
-		<button id="homeButton">Retour</button>
+		<p class="justified-text">Placez un poids de 500g sur un plot.<br />
+		Si le poids affiché est de 500g, la calibration est inutile.<br />
+		Dans le cas contraire, appuyez sur le bouton correspondant au plot occupé.
+		Le bouton passe au vert lorsque la calibration est terminée.
+
+		<div class="button-container">
+			<div class="rowCAL">
+				<div class="zoneCAL">
+                <button id="button2">Avant gauche</button>
+				<div id="valueCAL2">NC g</div>
+				</div>
+				<div class="zoneCAL">
+                <button id="button3">Avant droit</button>
+				<div id="valueCAL3">NC g</div>
+				</div>
+			</div>
+			<div class="rowCAL">
+				<div class="zoneCAL">
+                <button id="button6">Arrière gauche</button>
+				<div id="valueCAL6">NC g</div>
+				</div>
+				<div class="zoneCAL">
+                <button id="button7">Arrière droit</button>
+				<div id="valueCAL7">NC g</div>
+				</div>
+			</div>
+		</div>
+	<div class="rowCAL">
+			<button id="homeButton" class="homeButton">Retour</button>
+	</div>
 		<div class="space1"></div> <!-- Espace ajouté -->
 	</div>	
 </body>
@@ -417,7 +455,9 @@
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
     const onButton = document.getElementById('onButton');   
-    const latestValueSent = document.getElementById('valueSent');
+	const onButtonCAl = document.getElementById('onButtonCAl'); 
+    const homeButton = document.getElementById('homeButton');
+	const latestValueSent = document.getElementById('valueSent');
     const bleStateContainer = document.getElementById('bleState');	
     var deviceName = 'ESP32C6_BAL';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
@@ -435,29 +475,11 @@
 
     disconnectButton.addEventListener('click', disconnectDevice);
 
-		// DECOMPTE DU TEMPS ECOULE
-        let startTime;
-        let timer;
-        function updateTimer() {
-            const currentTime = new Date();
-            const timeDifference = currentTime - startTime;
-            const minutes = Math.floor(timeDifference / 60000);
-            const seconds = Math.floor((timeDifference % 60000) / 1000);
-            if (minutes >= 60) {
-                clearInterval(timer);
-                document.getElementById('timeDifference').innerText = "plus d'une heure";
-            } else {
-                document.getElementById('timeDifference').innerText = 
-                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-                    (seconds < 10 ? "0" + seconds : seconds);
-            }
-        }
         document.getElementById('onButton').addEventListener('click', () => {
             writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
-            clearInterval(timer); // Arrêter le compteur précédent
-            startTime = new Date(); // Enregistre l'heure actuelle
-            document.getElementById('timeDifference').innerText = "00:00"; // Réinitialise l'affichage
-            timer = setInterval(updateTimer, 1000); // Mettre à jour toutes les secondes
+        })
+		document.getElementById('onButtonCAL').addEventListener('click', () => {
+            writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
         });
 
     function isWebBluetoothEnabled() {
@@ -531,16 +553,16 @@
         const valeur3 = parseFloat(valeurs[2]);
         const valeur4 = parseFloat(valeurs[3]);
     // Effectuer les calculs
-		const somme1 = (valeur1)/10 ;
-        const somme2 = (valeur2)/10;
-		const somme3 = (valeur3)/10;
-        const somme4 = (valeur4)/10;
-		const somme1et2 = (valeur1 + valeur2)/10;
-        const somme3et4 = (valeur3 + valeur4)/10;
-		const somme1et3 = (valeur1 + valeur3)/10;
-        const somme2et4 = (valeur2 + valeur4)/10;
-		const somme2et3 = (valeur2 + valeur3)/10;
-        const somme1et4 = (valeur1 + valeur4)/10;
+		const somme1 = (valeur1);
+        const somme2 = (valeur2);
+		const somme3 = (valeur3);
+        const somme4 = (valeur4);
+		const somme1et2 = (valeur1 + valeur2);
+        const somme3et4 = (valeur3 + valeur4);
+		const somme1et3 = (valeur1 + valeur3);
+        const somme2et4 = (valeur2 + valeur4);
+		const somme2et3 = (valeur2 + valeur3);
+        const somme1et4 = (valeur1 + valeur4);
         const somme1et2et3et4 = (somme1et2 + somme3et4);
 		const pourcentage1et2 = (somme1et2 / somme1et2et3et4) * 100;
 		const pourcentage3et4 = (somme3et4 / somme1et2et3et4) * 100;
@@ -569,6 +591,13 @@
 		document.getElementById('valueBis10').innerText = `${pourcentage2et3.toFixed(0)}%`;
         document.getElementById('value11').innerText = `${somme1et4.toFixed(1)}g`;
 		document.getElementById('valueBis11').innerText = `${pourcentage1et4.toFixed(0)}%`;
+		
+	// Mettre à jour la deuxième valeur du tableau avec la valeur de valueCAL2
+    receivedValues[0] = somme1;
+
+    // Mettre à jour les couleurs des boutons
+    updateButtonColors(receivedValues);
+	
 		}
     
 	function writeOnCharacteristic(value){
@@ -620,39 +649,82 @@
     }
 	
 
-// Script de calibration 	
-	        document.getElementById('calibrationButton').addEventListener('click', function() {
+// Mode Calibration 
+	    document.getElementById('calibrationButton').addEventListener('click', function() { // demande l'entrée en mode calibration
             document.getElementById('calibrationDiv').style.display = 'none';
             document.getElementById('overlay').style.display = 'flex';
+			writeOnCharacteristic(2); 
         });
 
-        document.getElementById('homeButton').addEventListener('click', function() {
+        document.getElementById('homeButton').addEventListener('click', function() { // demande la sortie du mode calibration
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('calibrationDiv').style.display = 'flex';
+			writeOnCharacteristic(7); 
         });
 
-        // Simuler la réception de valeurs et changer la couleur des boutons
-        function updateButtonColors(values) {
-            const buttons = [
-                document.getElementById('button2'),
-                document.getElementById('button3'),
-                document.getElementById('button6'),
-                document.getElementById('button7')
-            ];
+		document.getElementById('button2').addEventListener('click', function() { // demande la calibration du plot n°1
+            document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('calibrationDiv').style.display = 'none';
+			writeOnCharacteristic(3); 
+        });
 
-            buttons.forEach((button, index) => {
-                const value = values[index];
-                if (value >= 300) {
-                    button.style.backgroundColor = 'green';
-                } else {
-                    button.style.backgroundColor = 'orange';
-                }
-            });
-        }
+		document.getElementById('button3').addEventListener('click', function() { // demande la calibration du plot n°2
+			document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('calibrationDiv').style.display = 'none';
+			writeOnCharacteristic(4); 
+        });
 
-        // Exemple de valeurs reçues
-       const receivedValues = [200, 350, 400, 100];
-        updateButtonColors(receivedValues);
-		
+		document.getElementById('button6').addEventListener('click', function() { // demande la calibration du plot n°3
+			document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('calibrationDiv').style.display = 'none';
+			writeOnCharacteristic(5); 
+        });
+
+		document.getElementById('button7').addEventListener('click', function() { // demande la calibration du plot n°4
+			document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('calibrationDiv').style.display = 'none';
+			writeOnCharacteristic(6); 
+        });
+
+
+// Exemple de valeurs reçues
+const receivedValues = [100, 100, 100, 100];
+
+// Fonction pour mettre à jour les couleurs des boutons après un clic
+function setupButtonClickHandlers(values) {
+    const buttons = [
+        document.getElementById('button2'),
+        document.getElementById('button3'),
+        document.getElementById('button6'),
+        document.getElementById('button7')
+    ];
+
+    // Gestionnaire d'événement pour le bouton "homeButton"
+    const homeButton = document.getElementById('homeButton');
+    homeButton.addEventListener('click', () => {
+        // Réinitialiser les couleurs des boutons
+        buttons.forEach(button => {
+            button.style.backgroundColor = '';
+        });
+    });
+
+    // Ajouter un gestionnaire de clic à chaque bouton
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            const value = values[index];
+            if (value >= 458 && value <= 502) {
+                button.style.backgroundColor = 'green';
+            } else {
+                button.style.backgroundColor = 'orange';
+            }
+        });
+    });
+}
+
+// Initialiser les gestionnaires d'événements
+setupButtonClickHandlers(receivedValues);
+
+
+
 </script>
 </html>
