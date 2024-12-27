@@ -1,3 +1,15 @@
+<!--
+  Mon programme est inspiré par :
+  
+			  - IA Copilot de Microsoft
+			  -	Rui Santos
+				Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
+
+
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -559,29 +571,30 @@
 		const pourcentage1et4 = (somme1et4 / somme1et2et3et4) * 100;
         const pourcentage2et3 = (somme2et3 / somme1et2et3et4) * 100;
     // Afficher les résultats
-		document.getElementById('value1').innerText = `${somme1et2.toFixed(1)}g`;
-		document.getElementById('value2').innerText = `${somme1.toFixed(1)}g`;
-		document.getElementById('valueCAL2').innerText = `${somme1.toFixed(1)}g`;
-        document.getElementById('value3').innerText = `${somme2.toFixed(1)}g`;
-		document.getElementById('valueCAL3').innerText = `${somme2.toFixed(1)}g`;
-        document.getElementById('value4').innerText = `${somme1et3.toFixed(1)}g`;
+		document.getElementById('value1').innerText = `${somme1et2.toFixed(0)}g`;
+		document.getElementById('value2').innerText = `${somme1.toFixed(0)}g`;
+		document.getElementById('valueCAL2').innerText = `${somme1.toFixed(0)}g`;
+        document.getElementById('value3').innerText = `${somme2.toFixed(0)}g`;
+		document.getElementById('valueCAL3').innerText = `${somme2.toFixed(0)}g`;
+        document.getElementById('value4').innerText = `${somme1et3.toFixed(0)}g`;
 		document.getElementById('valueBis4').innerText = `${pourcentage1et3.toFixed(0)}%`;
-		document.getElementById('value5').innerText = `${somme2et4.toFixed(1)}g`;
+		document.getElementById('value5').innerText = `${somme2et4.toFixed(0)}g`;
 		document.getElementById('valueBis5').innerText = `${pourcentage2et4.toFixed(0)}%`;
-        document.getElementById('value6').innerText = `${somme3.toFixed(1)}g`;
-		document.getElementById('valueCAL6').innerText = `${somme3.toFixed(1)}g`;
-        document.getElementById('value7').innerText = `${somme4.toFixed(1)}g`;
-		document.getElementById('valueCAL7').innerText = `${somme4.toFixed(1)}g`;
-        document.getElementById('value8').innerText = `${somme3et4.toFixed(1)}g`;
+        document.getElementById('value6').innerText = `${somme3.toFixed(0)}g`;
+		document.getElementById('valueCAL6').innerText = `${somme3.toFixed(0)}g`;
+        document.getElementById('value7').innerText = `${somme4.toFixed(0)}g`;
+		document.getElementById('valueCAL7').innerText = `${somme4.toFixed(0)}g`;
+        document.getElementById('value8').innerText = `${somme3et4.toFixed(0)}g`;
 		document.getElementById('valueBis8').innerText = `${pourcentage3et4.toFixed(0)}%`;
-		document.getElementById('value9').innerText = `${somme1et2et3et4.toFixed(1)}`; // poids total
-        document.getElementById('value10').innerText = `${somme2et3.toFixed(1)}g`;
+		document.getElementById('value9').innerText = `${somme1et2et3et4.toFixed(0)}`; // poids total
+        document.getElementById('value10').innerText = `${somme2et3.toFixed(0)}g`;
 		document.getElementById('valueBis10').innerText = `${pourcentage2et3.toFixed(0)}%`;
-        document.getElementById('value11').innerText = `${somme1et4.toFixed(1)}g`;
+        document.getElementById('value11').innerText = `${somme1et4.toFixed(0)}g`;
 		document.getElementById('valueBis11').innerText = `${pourcentage1et4.toFixed(0)}%`;
 		
 	// Mettre à jour la deuxième valeur du tableau avec la valeur de valueCAL2
-    receivedValues[0] = somme1;
+	receivedValues.splice(0, 4, somme1, somme2, somme3, somme4);
+
 
     // Mettre à jour les couleurs des boutons
     updateButtonColors(receivedValues);
@@ -676,41 +689,44 @@
 
 
 // Exemple de valeurs reçues
-const receivedValues = [100, 100, 100, 100];
+const receivedValues = [100, 100, 500, 500];
 
 // Fonction pour mettre à jour les couleurs des boutons après un clic
 function setupButtonClickHandlers(values) {
-    const buttons = [
-        document.getElementById('button2'),
-        document.getElementById('button3'),
-        document.getElementById('button6'),
-        document.getElementById('button7')
-    ];
+  const buttons = [
+    document.getElementById('button2'),
+    document.getElementById('button3'),
+    document.getElementById('button6'),
+    document.getElementById('button7')
+  ];
 
-    // Gestionnaire d'événement pour le bouton "homeButton"
-    const homeButton = document.getElementById('homeButton');
-    homeButton.addEventListener('click', () => {
-        // Réinitialiser les couleurs des boutons
-        buttons.forEach(button => {
-            button.style.backgroundColor = '';
-        });
+  // Gestionnaire d'événement pour le bouton "homeButton"
+  const homeButton = document.getElementById('onButtonCAL');
+  homeButton.addEventListener('click', () => {
+    // Réinitialiser les couleurs des boutons
+    buttons.forEach(button => {
+      button.style.backgroundColor = '';
     });
+  });
 
-    // Ajouter un gestionnaire de clic à chaque bouton
-    buttons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            const value = values[index];
-            if (value >= 458 && value <= 502) {
-                button.style.backgroundColor = 'green';
-            } else {
-                button.style.backgroundColor = 'orange';
-            }
-        });
+  // Ajouter un gestionnaire de clic à chaque bouton
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', function() {
+      const value = values[index];
+      console.log(`Button ${index + 1} clicked, value: ${value}`);
+      if (value >= 490 && value <= 510) {
+        button.style.backgroundColor = 'green';
+      } else {
+        button.style.backgroundColor = 'orange';
+      }
+      console.log(`Button ${index + 1} color: ${button.style.backgroundColor}`);
     });
+  });
 }
 
 // Initialiser les gestionnaires d'événements
 setupButtonClickHandlers(receivedValues);
+
 
 
 
