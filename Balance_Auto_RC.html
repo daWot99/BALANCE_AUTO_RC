@@ -1,15 +1,3 @@
-<!--
-  Mon programme est inspiré par :
-  
-			  - IA Copilot de Microsoft
-			  -	Rui Santos
-				Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
-
-
-
--->
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,29 +6,88 @@
     <title>Affichage de Valeurs</title>
     <style>
         html {
-			background-color: #202020; /* Couleur de fond gris foncé */
-			font-family: Arial, Helvetica, sans-serif;
-			display: inline-block;
-			text-align: center;
-		}
-		.full-page {
+            background-color: #202020; /* Couleur de fond gris foncé */
+            font-family: Arial, Helvetica, sans-serif;
+            display: inline-block;
+            text-align: center;
+        }
+        .full-page {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100%;
-        }		
-		h1 {
-			font-size:0.8rem;
+        }       
+        h1 {
+            font-size:0.8rem;
+            color: white;
+        }
+        .topnav {
+            overflow: hidden;
+            background-color: #3B3B3B;
+        }
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		#pageTitle {
+			margin: 0;
+		}
+
+		.dropdown {
+			margin: 0;
+
+		}
+		.dropdown .dropbtn {
+			font-size:1.2rem;
+			border: none;
+			outline: none;
 			color: white;
+			padding: 4px 16px;
+			background-color: inherit;
+			font-family: inherit;
+			margin: 0;
 		}
-		.topnav {
-			overflow: hidden;
-			background-color: #3B3B3B;
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			right: 0; 
+			transform: translateX(10%);
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
 		}
-		.content {
-			padding: 2px;
+		.dropdown-content a {
+			float: none;
+			color: black;
+			padding: 6px 8px;
+			text-decoration: none;
+			display: block;
+			text-align: left;
 		}
+		.dropdown-content a:hover {
+			background-color: #ddd;
+		}
+		.dropdown-content.show {
+			display: block;
+		}
+        .content {
+            padding: 2px;
+        }
         .body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -61,7 +108,7 @@
             width: 90%;
             margin: 2px 0;
         }
-		.rowCAL {
+        .rowCAL {
             display: flex;
             justify-content: center;
             width: 95%;
@@ -75,7 +122,7 @@
             width: 100px;
             text-align: center;
         }
-		.zoneCAL {
+        .zoneCAL {
             background-color: #5B5B5B;
             border: 1px solid #5B5B5B;
             padding: 2px;
@@ -83,24 +130,21 @@
             width: 100px;
             text-align: center;
         }
-		.zoneRoue {
+        .zoneRoue {
             background-color: #202020;
             border: 1px solid #202020;
-
             width: 45px;
             text-align: center;
         }
-		.zoneArbre {
+        .zoneArbre {
             background-color: #202020;
             border: 1px solid #202020;
-
             width: 40px;
             text-align: center;
         }
-		.zoneDiff {
+        .zoneDiff {
             background-color: #202020;
             border: 2px;
-
             width: 40px;
             text-align: center;
         }
@@ -110,9 +154,9 @@
             color: blue;
             font-size: 0.6em;
         }
-		.zone-name1 {
+        .zone-name1 {
             margin-top: 20px;
-			margin-bottom: 10px;
+            margin-bottom: 10px;
             font-weight: bold;
             color: blue;
             font-size: 0.6em;
@@ -121,7 +165,7 @@
             color: #FFF;
             font-size: 0.8em;
         }
-		.zone-valueBis {
+        .zone-valueBis {
             color: #FFF;
             font-size: 0.6em;
         }
@@ -140,65 +184,66 @@
             cursor: pointer;
             font-size: 1em;
         }
-		.space { 
-			height: 95px;
-		}
-		.space1 { 
-			height: 20px;
-		}
-		.space2 { 
-			height: 5px;
-		}
-		.buttonROUE {
+        .space { 
+            height: 95px;
+        }
+        .space1 { 
+            height: 20px;
+        }
+        .space2 { 
+            height: 5px;
+        }
+        .buttonROUE {
             width: 100%;
             height: 100%;
             background-color: #5B5B5B;
             border: none;
             border-radius: 10px;
         }
-		.buttonArbre {
+        .buttonArbre {
             width: 100%;
             height: 20%;
-			margin-top: 35px;
-			background-color: #888;
-			border: 5px solid #5B5B5B;
+            margin-top: 35px;
+            background-color: #888;
+            border: 5px solid #5B5B5B;
             border-radius: 8px;
         }
-		.buttonDiff {
+        .buttonDiff {
             width: 100%;
             height: 20%;
             padding: 10px 12px;
-			background-color: #888;
-			border: 5px solid #5B5B5B;
+            background-color: #888;
+            border: 5px solid #5B5B5B;
             border-radius: 40px;
-			margin-top: 30px;
-        }		
-		.button {
-			color: white;
-			padding: 14px 20px;
-			margin: 8px ;
-			border: none;
-			cursor: pointer;
-			border-radius: 4px;
-		}
-		.onButton{
-			padding: 10px 20px;
+            margin-top: 30px;
+        }       
+        .button {
+            color: white;
+            padding: 14px 20px;
+            margin: 8px ;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .onButton{
+            padding: 10px 20px;
             border: 2px solid #fff;
             border-radius: 10px;
             background-color: transparent;
             color: #fff;
             cursor: pointer;
             font-size: 1em;
-		}
-		.offButton{
-			background-color: #5f6c6d;
-		}
-		.button-row { 
-			display: flex;
-			justify-content: 
-			center; gap: 5px; 
-		}
-		.connectButton{
+        }
+        .offButton{
+            background-color: #5f6c6d;
+        }
+        .button-row { 
+            display: flex;
+            justify-content: 
+            center; gap: 5px; 
+        }
+        .connectButton{
+            display: none;
 			padding: 3px 14px;
             border: none;
             border-radius: 10px;
@@ -206,47 +251,49 @@
             color: #fff;
             cursor: pointer;
             font-size: 1em;
-		}
-		.disconnectButton{
- 			padding: 3px 8px;
+        }
+        .disconnectButton{
+            display: none;
+			padding: 3px 8px;
             border: none;
             border-radius: 10px;
             background-color: red;
             color: #fff;
             cursor: pointer;
             font-size: 1em;
-		}
-		.CalibrationButton{
- 			padding: 3px 8px;
+        }
+        .CalibrationButton{
+            display: none;
+			padding: 3px 8px;
             border: none;
             border-radius: 10px;
             background-color: orange;
             color: #fff;
             cursor: pointer;
             font-size: 1em;
-		}
-		.gray-label {
-			color: #bebebe;
-			font-size: 1rem;
-		}
-		.reading {
-			font-size: 1.8rem;
-		}
-		.overlay {			
-			display: none;
+        }
+        .gray-label {
+            color: #bebebe;
+            font-size: 1rem;
+        }
+        .reading {
+            font-size: 1.8rem;
+        }
+        .overlay {            
+            display: none;
             position: top;
-			margin: 1px; /* Centre horizontalement */ 
-			text-align: center;
+            margin: 1px; /* Centre horizontalement */ 
+            text-align: center;
             width: 95%;
             height: 100%;
             background-color: #5B5B5B;
-			border: 10px solid #ADADAD;;
-			border-radius: 60px;
+            border: 10px solid #ADADAD;;
+            border-radius: 60px;
             z-index: 1000;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-			font-size: 1rem;
+            font-size: 1rem;
         }
         .button-container {
             display: flex;
@@ -257,9 +304,9 @@
             text-align: center;
         }
         .button-container button {     
-			padding: 3px 5px;
+            padding: 3px 5px;
             width: 100px;
-			border: none;
+            border: none;
             border-radius: 10px;
             background-color: orange; /* Couleur initiale des boutons */
             color: #fff;
@@ -271,49 +318,63 @@
             padding: 5px 10px;
             font-size: 16px;
             border: 2px solid #fff;
-			border-radius: 10px;
+            border-radius: 10px;
             cursor: pointer;
             background-color: #007BFF;
             color: white;
-        }	
-		.onButtonCAL{
-			margin-top: 20px;
+        }   
+        .onButtonCAL{
+            margin-top: 20px;
             padding: 5px 10px;
             font-size: 16px;
             border: 2px solid #fff;
-			border-radius: 10px;
+            border-radius: 10px;
             cursor: pointer;
             background-color: #007BFF;
             color: white;
-            
-		}
-		.instructions {
-			padding: 5px 10px;
-			text-align: justify;
-			line-height: 1; /* Ajuster l'interligne */ 
-			text-align: left; /* Aligner le texte à gauche */ }
-		}
-		.instructions li { 
-			margin-bottom: 2px; /* Espacement entre les lignes */ 
-		}
-		.justified-text {
-		text-align: justify; 
-		}
+        }
+        .instructions {
+            padding: 5px 10px;
+            text-align: justify;
+            line-height: 1; /* Ajuster l'interligne */ 
+            text-align: left; /* Aligner le texte à gauche */ 
+        }
+        .instructions li { 
+            margin-bottom: 2px; /* Espacement entre les lignes */ 
+        }
+        .justified-text {
+            text-align: justify; 
+        }
     </style>
 </head>
 <body>
-	    
-	<div class="topnav">
-        <h1 id="pageTitle">Balance Auto RC &nbsp; <strong><span id="bleState" style="color:red ;">non connectée</span></h1>
+        
+<div class="topnav">
+
+<div class="header">
+    <h1 id="pageTitle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance Auto RC &nbsp; <strong><span id="bleState" style="color:red;">non connectée</span></strong></h1>
+    <div class="dropdown">
+	<button class="dropbtn" id="dropdownButton">&#9776;</button>
+	<i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="dropdownContent">
+            <a href="#" id="menuConnectBleButton">Connexion</a>
+            <a href="#" id="menuDisconnectBleButton">Déconnexion</a>
+            <a href="#" id="menuCalibrationButton">Calibration</a>
+        </div>
     </div>
-	
-	<div id="calibrationDiv" class="full-page">
-	<div class="container">
+</div>
+
+
+</div>
+    
+    <div id="calibrationDiv" class="full-page">
+    <div class="container">
         <div class="row">
             <div class="zone">
                 <div class="zone-name">Poids avant</div>
                 <div class="zone-value" id="value1">NC g</div>
-				<div class="zone-valueBis" id="valueBis1">NC %</div>
+                <div class="zone-valueBis" id="valueBis1">NC %</div>
             </div>
         </div>
         <div class="row">
@@ -322,43 +383,43 @@
                 <div class="zone-value" id="value2">NC g</div>
             </div>
                 <div class="zoneRoue"><button class="buttonROUE"></button></div>
-				<!-- dessiner des essieux -->		
+                <!-- dessiner des essieux -->      
                 <div class="zoneArbre"><button class="buttonArbre"></button></div>
-				<div class="zoneDiff"><button class="buttonDiff"></button></div>				
+                <div class="zoneDiff"><button class="buttonDiff"></button></div>              
                 <div class="zoneArbre"><button class="buttonArbre"></button></div>
-				<div class="zoneRoue"><button class="buttonROUE"></button></div>			
-			<div class="zone">
+                <div class="zoneRoue"><button class="buttonROUE"></button></div>         
+            <div class="zone">
                 <div class="zone-name1">Avant droit</div>
                 <div class="zone-value" id="value3">NC g</div>
             </div>
-			<div class="space"></div> <!-- Espace ajouté -->
-		</div>
+            <div class="space"></div> <!-- Espace ajouté -->
+        </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name1">Poids à gauche</div>
                 <div class="zone-value" id="value4">NC g</div>
-				<div class="zone-valueBis" id="valueBis4">NC %</div>
+                <div class="zone-valueBis" id="valueBis4">NC %</div>
             </div>
-				<div class="zone"></div> <!-- Ecartement -->
-				<div class="zone"></div> <!-- Ecartement -->
+                <div class="zone"></div> <!-- Ecartement -->
+                <div class="zone"></div> <!-- Ecartement -->
             <div class="zone">
                 <div class="zone-name1">Poids à droite</div>
                 <div class="zone-value" id="value5">NC g</div>
-				<div class="zone-valueBis" id="valueBis5">NC %</div>
+                <div class="zone-valueBis" id="valueBis5">NC %</div>
             </div>
-			<div class="space"></div> <!-- Espace ajouté -->
+            <div class="space"></div> <!-- Espace ajouté -->
         </div>
         <div class="row">
             <div class="zone">
                 <div class="zone-name1">Arrière gauche</div>
                 <div class="zone-value" id="value6">NC g</div>
             </div>
-				<div class="zoneRoue"><button class="buttonROUE"></button></div>
-				<!-- dessiner des essieux -->		
+                <div class="zoneRoue"><button class="buttonROUE"></button></div>
+                <!-- dessiner des essieux -->      
                 <div class="zoneArbre"><button class="buttonArbre"></button></div>
-				<div class="zoneDiff"><button class="buttonDiff"></button></div>				
+                <div class="zoneDiff"><button class="buttonDiff"></button></div>              
                 <div class="zoneArbre"><button class="buttonArbre"></button></div>
-				<div class="zoneRoue"><button class="buttonROUE"></button></div>	
+                <div class="zoneRoue"><button class="buttonROUE"></button></div>         
             <div class="zone">
                 <div class="zone-name1">Arrière droit</div>
                 <div class="zone-value" id="value7">NC g</div>
@@ -369,7 +430,7 @@
             <div class="zone">
                 <div class="zone-name">Poids arrière</div>
                 <div class="zone-value" id="value8">NC g</div>
-				<div class="zone-valueBis" id="valueBis8">NC %</div>
+                <div class="zone-valueBis" id="valueBis8">NC %</div>
             </div>
         <div class="space1"></div> <!-- Espace ajouté -->
         </div>
@@ -384,81 +445,85 @@
             <div class="zone">
                 <div class="zone-name">AV.Droit/AR.Gauche</div>
                 <div class="zone-value" id="value10">NC g</div>
-				<div class="zone-valueBis" id="valueBis10">NC %</div>
+                <div class="zone-valueBis" id="valueBis10">NC %</div>
             </div>
         <div class="space1"></div> <!-- Espace ajouté -->
-				<div class="zone"></div> <!-- Ecartement -->
-				<div class="zone"></div> <!-- Ecartement -->
+                <div class="zone"></div> <!-- Ecartement -->
+                <div class="zone"></div> <!-- Ecartement -->
             <div class="zone">
                 <div class="zone-name">AV.Gauche/AR.Droit</div>
                 <div class="zone-value" id="value11">NC g</div>
-				<div class="zone-valueBis" id="valueBis11">NC %</div>
+                <div class="zone-valueBis" id="valueBis11">NC %</div>
             </div>
         </div>
-		<div class="zone-value">
-			<button id="connectBleButton" class="connectButton">connecter</button>
-			<button id="onButton" class="onButton">Zéro</button>
-			<button id="disconnectBleButton" class="disconnectButton">déconnecter</button>
-		</div>
-	<div class="space2"></div> <!-- Espace ajouté -->	
-	<div id="calibrationDiv" class="full-page">
+        <div class="zone-value">
+            <button id="connectBleButton" class="connectButton">connecter</button>
+            <button id="onButton" class="onButton">Zéro</button>
+            <button id="disconnectBleButton" class="disconnectButton">déconnecter</button>
+        </div>
+    <div class="space2"></div> <!-- Espace ajouté -->   
+    <div id="calibrationDiv" class="full-page">
         <button id="calibrationButton" class="CalibrationButton">Calibration</button>
     </div> 
     <div class="footer">
-        <p><a>Merci au programme qui m'a grandement aidé</a></p>
-		<p><a href="https://randomnerdtutorials.com/">ESP Web Bluetooth par Created by RandomNerdTutorials.com</a></p>
-        <p><a href="https://RandomNerdTutorials.com/esp32-web-bluetooth/">Read the full project here.</a></p>
-    </div></div></div>	
-	
+        <p>Votre navigateur ne supporte le Web Bluetooth</p>
+        <p><a href="https://dawot99.github.io/BALANCE_AUTO_RC/Balance_Auto_RC.html">cliquez ici</a></p>
+    </div>
+	</div>
+	</div>   
+    
 <!-- DIV de calibration avec boutons et retours -->
-	<div id="overlay" class="overlay">
-		<ul class="instructions">
-		<p>MODE CALIBRATION</p>	
-		<p class="justified-text">Avant de commencer, assurez-vous qu'aucun objet n'occupe les plots de mesure et demandez une remise à zéro.</p>	
-	<div class="rowCAL">
-		<button id="onButtonCAL" class="onButton">Zéro</button>	
-	</div>
-		<p class="justified-text">Placez un poids de 500g sur un plot.<br />
-		Si le poids affiché est de 500g, la calibration est inutile.<br />
-		Dans le cas contraire, appuyez sur le bouton correspondant au plot occupé.
-		Le bouton passe au vert lorsque la calibration est terminée.
+    <div id="overlay" class="overlay">
+        <ul class="instructions">
+        <p>MODE CALIBRATION</p>  
+        <p class="justified-text">Avant de commencer, assurez-vous qu'aucun objet n'occupe les plots de mesure et demandez une remise à zéro.</p>   
+    <div class="rowCAL">
+        <button id="onButtonCAL" class="onButton">Zéro</button>   
+    </div>
+        <p class="justified-text">Placez un poids de 500g sur un plot.<br />
+        Si le poids affiché est de 500g, la calibration est inutile.<br />
+        Dans le cas contraire, appuyez sur le bouton correspondant au plot occupé.
+        Le bouton passe au vert lorsque la calibration est terminée.
 
-		<div class="button-container">
-			<div class="rowCAL">
-				<div class="zoneCAL">
+        <div class="button-container">
+            <div class="rowCAL">
+                <div class="zoneCAL">
                 <button id="button2">Avant gauche</button>
-				<div id="valueCAL2">NC g</div>
-				</div>
-				<div class="zoneCAL">
+                <div id="valueCAL2">NC g</div>
+                </div>
+                <div class="zoneCAL">
                 <button id="button3">Avant droit</button>
-				<div id="valueCAL3">NC g</div>
-				</div>
-			</div>
-			<div class="rowCAL">
-				<div class="zoneCAL">
+                <div id="valueCAL3">NC g</div>
+                </div>
+            </div>
+            <div class="rowCAL">
+                <div class="zoneCAL">
                 <button id="button6">Arrière gauche</button>
-				<div id="valueCAL6">NC g</div>
-				</div>
-				<div class="zoneCAL">
+                <div id="valueCAL6">NC g</div>
+                </div>
+                <div class="zoneCAL">
                 <button id="button7">Arrière droit</button>
-				<div id="valueCAL7">NC g</div>
-				</div>
-			</div>
-		</div>
-	<div class="rowCAL">
-			<button id="homeButton" class="homeButton">Retour</button>
-	</div>
-		<div class="space1"></div> <!-- Espace ajouté -->
-	</div>	
+                <div id="valueCAL7">NC g</div>
+                </div>
+            </div>
+        </div>
+    <div class="rowCAL">
+            <button id="homeButton" class="homeButton">Retour</button>
+    </div>
+        <div class="space1"></div> <!-- Espace ajouté -->
+    </div>  
 </body>
 <script>
+document.addEventListener('DOMContentLoaded', (event) => {
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
     const onButton = document.getElementById('onButton');   
-	const onButtonCAl = document.getElementById('onButtonCAl'); 
+    const onButtonCAL = document.getElementById('onButtonCAL'); 
     const homeButton = document.getElementById('homeButton');
-	const latestValueSent = document.getElementById('valueSent');
+    const latestValueSent = document.getElementById('valueSent');
     const bleStateContainer = document.getElementById('bleState');	
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownContent = document.getElementById('dropdownContent');
     var deviceName = 'ESP32-C6_BAL001';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
     var TARECharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
@@ -466,6 +531,47 @@
     var bleServer;
     var bleServiceFound;
     var sensorCharacteristicFound;
+
+    // Fonction pour fermer le menu déroulant
+    function closeDropdown() {
+        dropdownContent.classList.remove('show');
+    }
+
+    // Fonction pour basculer l'affichage du menu déroulant
+    function toggleDropdown() {
+        dropdownContent.classList.toggle('show');
+    }
+
+    // Ajout des actions pour le menu déroulant et fermeture du menu après sélection
+
+
+    document.getElementById('menuConnectBleButton').addEventListener('click', () => {
+        if (isWebBluetoothEnabled()){
+            connectToDevice();
+        }
+        closeDropdown();
+    });
+
+    document.getElementById('menuDisconnectBleButton').addEventListener('click', () => {
+        disconnectDevice();
+        closeDropdown();
+    });
+
+    document.getElementById('menuCalibrationButton').addEventListener('click', () => {
+        document.getElementById('calibrationDiv').style.display = 'none';
+        document.getElementById('overlay').style.display = 'flex';
+        writeOnCharacteristic(2); // demande l'entrée en mode calibration
+        closeDropdown();
+    });
+
+    dropdownButton.addEventListener('click', toggleDropdown);
+
+    // Ferme le menu si l'utilisateur clique en dehors de celui-ci
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            closeDropdown();
+        }
+    });
 
     connectButton.addEventListener('click', (event) => {
         if (isWebBluetoothEnabled()){
@@ -475,12 +581,13 @@
 
     disconnectButton.addEventListener('click', disconnectDevice);
 
-        document.getElementById('onButton').addEventListener('click', () => {
-            writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
-        })
-		document.getElementById('onButtonCAL').addEventListener('click', () => {
-            writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
-        });
+    onButton.addEventListener('click', () => {
+        writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
+    });
+
+    onButtonCAL.addEventListener('click', () => {
+        writeOnCharacteristic(1); // demandée une remise à zéro (TARECharacteristic)
+    });
 
     function isWebBluetoothEnabled() {
         if (!navigator.bluetooth) {
@@ -527,7 +634,7 @@
             console.log("Read value: ", value);
             const decodedValue = new TextDecoder().decode(value);
             console.log("Decoded value: ", decodedValue);
-			retrievedValue1.innerHTML = decodedValue;
+            retrievedValue1.innerHTML = decodedValue;
         })
         .catch(error => {
             console.log('Error: ', error);
@@ -543,65 +650,63 @@
 
     function handleCharacteristicChange(event){
         const newValueReceived = new TextDecoder().decode(event.target.value);
-		console.log("Characteristic value changed: ", newValueReceived);
-		
-	// Récupérer les valeurs des pesées
+        console.log("Characteristic value changed: ", newValueReceived);
+
+        // Récupérer les valeurs des pesées
         const valeurs = newValueReceived.split(',');
-    // Convertir les valeurs en nombres
+        // Convertir les valeurs en nombres
         const valeur1 = parseFloat(valeurs[0]);
         const valeur2 = parseFloat(valeurs[1]);
         const valeur3 = parseFloat(valeurs[2]);
         const valeur4 = parseFloat(valeurs[3]);
-    // Effectuer les calculs
-		const somme1 = (valeur1);
-        const somme2 = (valeur2);
-		const somme3 = (valeur3);
-        const somme4 = (valeur4);
-		const somme1et2 = (valeur1 + valeur2);
-        const somme3et4 = (valeur3 + valeur4);
-		const somme1et3 = (valeur1 + valeur3);
-        const somme2et4 = (valeur2 + valeur4);
-		const somme2et3 = (valeur2 + valeur3);
-        const somme1et4 = (valeur1 + valeur4);
+        // Effectuer les calculs
+        const somme1 = Math.abs(valeur1);
+        const somme2 = Math.abs(valeur2);
+        const somme3 = Math.abs(valeur3);
+        const somme4 = Math.abs(valeur4);
+        const somme1et2 = (somme1 + somme2);
+        const somme3et4 = (somme3 + somme4);
+        const somme1et3 = (somme1 + somme3);
+        const somme2et4 = (somme2 + somme4);
+        const somme2et3 = (somme2 + somme3);
+        const somme1et4 = (somme1 + somme4);
         const somme1et2et3et4 = (somme1et2 + somme3et4);
-		const pourcentage1et2 = (somme1et2 / somme1et2et3et4) * 100;
-		const pourcentage3et4 = (somme3et4 / somme1et2et3et4) * 100;
-		const pourcentage1et3 = (somme1et3 / somme1et2et3et4) * 100;
-		const pourcentage2et4 = (somme2et4 / somme1et2et3et4) * 100;
-		const pourcentage1et4 = (somme1et4 / somme1et2et3et4) * 100;
+        const pourcentage1et2 = (somme1et2 / somme1et2et3et4) * 100;
+        const pourcentage3et4 = (somme3et4 / somme1et2et3et4) * 100;
+        const pourcentage1et3 = (somme1et3 / somme1et2et3et4) * 100;
+        const pourcentage2et4 = (somme2et4 / somme1et2et3et4) * 100;
+        const pourcentage1et4 = (somme1et4 / somme1et2et3et4) * 100;
         const pourcentage2et3 = (somme2et3 / somme1et2et3et4) * 100;
-    // Afficher les résultats
-		document.getElementById('value1').innerText = `${somme1et2.toFixed(0)}g`;
-		document.getElementById('value2').innerText = `${somme1.toFixed(0)}g`;
-		document.getElementById('valueCAL2').innerText = `${somme1.toFixed(0)}g`;
+        // Afficher les résultats
+        document.getElementById('value1').innerText = `${somme1et2.toFixed(0)}g`;
+        document.getElementById('value2').innerText = `${somme1.toFixed(0)}g`;
+        document.getElementById('valueCAL2').innerText = `${somme1.toFixed(0)}g`;
         document.getElementById('value3').innerText = `${somme2.toFixed(0)}g`;
-		document.getElementById('valueCAL3').innerText = `${somme2.toFixed(0)}g`;
+        document.getElementById('valueCAL3').innerText = `${somme2.toFixed(0)}g`;
         document.getElementById('value4').innerText = `${somme1et3.toFixed(0)}g`;
-		document.getElementById('valueBis4').innerText = `${pourcentage1et3.toFixed(0)}%`;
-		document.getElementById('value5').innerText = `${somme2et4.toFixed(0)}g`;
-		document.getElementById('valueBis5').innerText = `${pourcentage2et4.toFixed(0)}%`;
+        document.getElementById('valueBis4').innerText = `${pourcentage1et3.toFixed(0)}%`;
+        document.getElementById('value5').innerText = `${somme2et4.toFixed(0)}g`;
+        document.getElementById('valueBis5').innerText = `${pourcentage2et4.toFixed(0)}%`;
         document.getElementById('value6').innerText = `${somme3.toFixed(0)}g`;
-		document.getElementById('valueCAL6').innerText = `${somme3.toFixed(0)}g`;
+        document.getElementById('valueCAL6').innerText = `${somme3.toFixed(0)}g`;
         document.getElementById('value7').innerText = `${somme4.toFixed(0)}g`;
-		document.getElementById('valueCAL7').innerText = `${somme4.toFixed(0)}g`;
+        document.getElementById('valueCAL7').innerText = `${somme4.toFixed(0)}g`;
         document.getElementById('value8').innerText = `${somme3et4.toFixed(0)}g`;
-		document.getElementById('valueBis8').innerText = `${pourcentage3et4.toFixed(0)}%`;
-		document.getElementById('value9').innerText = `${somme1et2et3et4.toFixed(0)}`; // poids total
+        document.getElementById('valueBis8').innerText = `${pourcentage3et4.toFixed(0)}%`;
+        document.getElementById('value9').innerText = `${somme1et2et3et4.toFixed(0)}`; // poids total
         document.getElementById('value10').innerText = `${somme2et3.toFixed(0)}g`;
-		document.getElementById('valueBis10').innerText = `${pourcentage2et3.toFixed(0)}%`;
+        document.getElementById('valueBis10').innerText = `${pourcentage2et3.toFixed(0)}%`;
         document.getElementById('value11').innerText = `${somme1et4.toFixed(0)}g`;
-		document.getElementById('valueBis11').innerText = `${pourcentage1et4.toFixed(0)}%`;
-		
-	// Mettre à jour la deuxième valeur du tableau avec la valeur de valueCAL2
-	receivedValues.splice(0, 4, somme1, somme2, somme3, somme4);
+        document.getElementById('valueBis11').innerText = `${pourcentage1et4.toFixed(0)}%`;
 
+        // Mettre à jour la deuxième valeur du tableau avec la valeur de valueCAL2
+        receivedValues.splice(0, 4, somme1, somme2, somme3, somme4);
 
-    // Mettre à jour les couleurs des boutons
-    updateButtonColors(receivedValues);
-	
-		}
-    
-	function writeOnCharacteristic(value){
+        // Mettre à jour les couleurs des boutons
+        updateButtonColors(receivedValues);
+    }
+
+    function writeOnCharacteristic(value){
         if (bleServer && bleServer.connected) {
             bleServiceFound.getCharacteristic(TARECharacteristic)
             .then(characteristic => {
@@ -617,7 +722,7 @@
                 console.error("Error writing to the TAREcharacteristic: ", error);
             });
         } else {
-            console.error ("Bluetooth is not connected. Cannot write to characteristic.")
+            console.error("Bluetooth is not connected. Cannot write to characteristic.")
             window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
         }
     }
@@ -648,87 +753,82 @@
             window.alert("Bluetooth is not connected.")
         }
     }
-	
 
-// Mode Calibration 
-	    document.getElementById('calibrationButton').addEventListener('click', function() { // demande l'entrée en mode calibration
-            document.getElementById('calibrationDiv').style.display = 'none';
-            document.getElementById('overlay').style.display = 'flex';
-			writeOnCharacteristic(2); 
-        });
-
-        document.getElementById('homeButton').addEventListener('click', function() { // demande la sortie du mode calibration
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('calibrationDiv').style.display = 'flex';
-			writeOnCharacteristic(7); 
-        });
-
-		document.getElementById('button2').addEventListener('click', function() { // demande la calibration du plot n°1
-            document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('calibrationDiv').style.display = 'none';
-			writeOnCharacteristic(3); 
-        });
-
-		document.getElementById('button3').addEventListener('click', function() { // demande la calibration du plot n°2
-			document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('calibrationDiv').style.display = 'none';
-			writeOnCharacteristic(4); 
-        });
-
-		document.getElementById('button6').addEventListener('click', function() { // demande la calibration du plot n°3
-			document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('calibrationDiv').style.display = 'none';
-			writeOnCharacteristic(5); 
-        });
-
-		document.getElementById('button7').addEventListener('click', function() { // demande la calibration du plot n°4
-			document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('calibrationDiv').style.display = 'none';
-			writeOnCharacteristic(6); 
-        });
-
-
-// Exemple de valeurs reçues
-const receivedValues = [100, 100, 500, 500];
-
-// Fonction pour mettre à jour les couleurs des boutons après un clic
-function setupButtonClickHandlers(values) {
-  const buttons = [
-    document.getElementById('button2'),
-    document.getElementById('button3'),
-    document.getElementById('button6'),
-    document.getElementById('button7')
-  ];
-
-  // Gestionnaire d'événement pour le bouton "homeButton"
-  const homeButton = document.getElementById('onButtonCAL');
-  homeButton.addEventListener('click', () => {
-    // Réinitialiser les couleurs des boutons
-    buttons.forEach(button => {
-      button.style.backgroundColor = '';
+    // Mode Calibration 
+    document.getElementById('calibrationButton').addEventListener('click', function() { // demande l'entrée en mode calibration
+        document.getElementById('calibrationDiv').style.display = 'none';
+        document.getElementById('overlay').style.display = 'flex';
+        writeOnCharacteristic(2); 
     });
-  });
 
-  // Ajouter un gestionnaire de clic à chaque bouton
-  buttons.forEach((button, index) => {
-    button.addEventListener('click', function() {
-      const value = values[index];
-      console.log(`Button ${index + 1} clicked, value: ${value}`);
-      if (value >= 490 && value <= 510) {
-        button.style.backgroundColor = 'green';
-      } else {
-        button.style.backgroundColor = 'orange';
-      }
-      console.log(`Button ${index + 1} color: ${button.style.backgroundColor}`);
+    homeButton.addEventListener('click', function() { // demande la sortie du mode calibration
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('calibrationDiv').style.display = 'flex';
+        writeOnCharacteristic(7); 
     });
-  });
-}
 
-// Initialiser les gestionnaires d'événements
-setupButtonClickHandlers(receivedValues);
+    document.getElementById('button2').addEventListener('click', function() { // demande la calibration du plot n°1
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('calibrationDiv').style.display = 'none';
+        writeOnCharacteristic(3); 
+    });
 
+    document.getElementById('button3').addEventListener('click', function() { // demande la calibration du plot n°2
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('calibrationDiv').style.display = 'none';
+        writeOnCharacteristic(4); 
+    });
 
+    document.getElementById('button6').addEventListener('click', function() { // demande la calibration du plot n°3
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('calibrationDiv').style.display = 'none';
+        writeOnCharacteristic(5); 
+    });
 
+    document.getElementById('button7').addEventListener('click', function() { // demande la calibration du plot n°4
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('calibrationDiv').style.display = 'none';
+        writeOnCharacteristic(6); 
+    });
 
+    // Exemple de valeurs reçues
+    const receivedValues = [100, 100, 500, 500];
+
+    // Fonction pour mettre à jour les couleurs des boutons après un clic
+    function setupButtonClickHandlers(values) {
+        const buttons = [
+            document.getElementById('button2'),
+            document.getElementById('button3'),
+            document.getElementById('button6'),
+            document.getElementById('button7')
+        ];
+
+        // Gestionnaire d'événement pour le bouton "homeButton"
+        const homeButton = document.getElementById('onButtonCAL');
+        homeButton.addEventListener('click', () => {
+            // Réinitialiser les couleurs des boutons
+            buttons.forEach(button => {
+                button.style.backgroundColor = '';
+            });
+        });
+
+        // Ajouter un gestionnaire de clic à chaque bouton
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                const value = values[index];
+                console.log(`Button ${index + 1} clicked, value: ${value}`);
+                if (value >= 490 && value <= 510) {
+                    button.style.backgroundColor = 'green';
+                } else {
+                    button.style.backgroundColor = 'orange';
+                }
+                console.log(`Button ${index + 1} color: ${button.style.backgroundColor}`);
+            });
+        });
+    }
+
+    // Initialiser les gestionnaires d'événements
+    setupButtonClickHandlers(receivedValues);
+});
 </script>
 </html>
