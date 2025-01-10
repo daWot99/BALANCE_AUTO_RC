@@ -19,7 +19,7 @@
             height: 100%;
         }       
         h1 {
-            font-size:0.8rem;
+			font-size:0.8rem;
             color: white;
         }
         .topnav {
@@ -46,17 +46,15 @@
 		#pageTitle {
 			margin: 0;
 		}
-
 		.dropdown {
 			margin: 0;
-
 		}
 		.dropdown .dropbtn {
 			font-size:1.2rem;
 			border: none;
 			outline: none;
 			color: white;
-			padding: 4px 16px;
+			padding: 7px 8px;
 			background-color: inherit;
 			font-family: inherit;
 			margin: 0;
@@ -65,7 +63,7 @@
 			display: none;
 			position: absolute;
 			right: 0; 
-			transform: translateX(10%);
+			transform: translateX(30%);
 			background-color: #f9f9f9;
 			min-width: 160px;
 			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -347,27 +345,21 @@
         }
     </style>
 </head>
-<body>
-        
+<body>       
 <div class="topnav">
-
-<div class="header">
-    <h1 id="pageTitle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance Auto RC &nbsp; <strong><span id="bleState" style="color:red;">non connectée</span></strong></h1>
-    <div class="dropdown">
-	<button class="dropbtn" id="dropdownButton">&#9776;</button>
-	<i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content" id="dropdownContent">
-            <a href="#" id="menuConnectBleButton">Connexion</a>
-            <a href="#" id="menuDisconnectBleButton">Déconnexion</a>
-            <a href="#" id="menuCalibrationButton">Calibration</a>
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 id="pageTitle" style="flex-grow: 1; text-align: center;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; Balance Auto RC &nbsp; <strong><span id="bleState" style="color:red;">non connectée</span></strong></h1>
+        <div class="dropdown">
+            <button class="dropbtn" id="dropdownButton">&#9776;</button>
+            <i class="fa fa-caret-down"></i>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="#" id="menuConnectBleButton">Connexion</a>
+                <a href="#" id="menuDisconnectBleButton">Déconnexion</a>
+                <a href="#" id="menuCalibrationButton">Calibration</a>
+            </div>
         </div>
     </div>
 </div>
-
-
-</div>
-    
     <div id="calibrationDiv" class="full-page">
     <div class="container">
         <div class="row">
